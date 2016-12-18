@@ -1,7 +1,7 @@
 import gps
 import time
 
-print("I love Shelby!")
+
 
 # Number of GPS fixes we've received:
 numberOfFixes = 0
