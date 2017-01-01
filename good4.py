@@ -1,6 +1,7 @@
 import gps
 import time
 
+lapNum = 0
 # Number of GPS fixes we've received:
 numberOfFixes = 0
 numberOfFixesInFinishZoneOnThisLap = 0
@@ -14,6 +15,7 @@ polygon = [(39.733452,-105.026622),(39.733449,-105.026069),(39.732993,-105.02612
 # Listen on port 2947 (gpsd) of localhost
 session = gps.gps("localhost", "2947")
 session.stream(gps.WATCH_ENABLE | gps.WATCH_NEWSTYLE)
+print("Start Trackmouse")
 
 
 # This function does the following
@@ -24,28 +26,37 @@ session.stream(gps.WATCH_ENABLE | gps.WATCH_NEWSTYLE)
 #       crossing. We do this by setting numberOfFixesInFinishZoneOnThisLap = 0
 def haveWeCrossedFinish(lat, lon):
 	global numberOfFixesInFinishZoneOnThisLap
-	print("haveWeCrossedFinish??")
+	global time0
+	# print("haveWeCrossedFinish??")
 
 	global numberOfFixes
+	global lapNum
 	numberOfFixes += 1
-	print("fix")
+	## print("fix")
 
 	hasCrossedFinishLine = point_in_poly(lat, lon, polygon)
-	if hasCrossedFinishLine:
+	if hasCrossedFinishLine == True:
 		numberOfFixesInFinishZoneOnThisLap += 1
-		print(numberOfFixes, "lat", str(lat), "lon", str(lon), "hasCrossed", hasCrossedFinishLine)
+		# print(numberOfFixes, "lat", str(lat), "lon", str(lon), "hasCrossed", hasCrossedFinishLine)
 		if numberOfFixesInFinishZoneOnThisLap == 1:
+
 			# Get wall time
 			if time0 > 0:
 				elapsedTime = time.time() - time0, " Time seconds wall time "
 			# store wall time at lap beginning so we can use it to calculate elapsedTime for the next lap:
 			time0 = time.time()
-
-			print("FINISH!!!! ", numberOfFixes, "lat", str(lat), "lon", str(lon), "elapsed:", elapsedTime)
+			# print(" ")
+			# print(elapsedTime, " ################################################################")
+			# print(elapsedTime, " ################################################################")
+			# print(elapsedTime, " ########## FINISH!!!! ", numberOfFixes, "lat", str(lat), "lon", str(lon), "elapsed:", elapsedTime)
+			# print(elapsedTime, " ################################################################")
+			print("Lap", lapNum, elapsedTime )
+			# print(" ")
+			lapNum += 1
 	else:
 		if numberOfFixesInFinishZoneOnThisLap > 1:
 			# have we left the finish zone?
-			print("Set the numberOfFixeser to 0. We should reset the location too")
+			# print("Set the numberOfFixeser to 0. We should reset the location too")
 			numberOfFixesInFinishZoneOnThisLap = 0
 
 
@@ -82,15 +93,16 @@ while True:
 		report = session.next()
 		# Wait for a 'TPV' report and display the current time.
 		# To see all report data, uncomment the line below"
-		# print "##### START REPORT #####"
-		#print report
-		#print "###### END OF REPORT #######"
-		#print " "
+		# # print "##### START REPORT #####"
+		## print report
+		## print "###### END OF REPORT #######"
+		## print " "
 		if report['class'] == 'TPV':
 			if hasattr(report, 'time'):
-				print report.time
+				# print report.time
+				pass
 			if hasattr(report, 'lat'):
-				print "Lat:" , report.lat, " Lon:", report.lon, " Speed:", report.speed, " Speed KPH:", report.speed * gps.MPS_TO_KPH, " Speed MPH:", report.speed * gps.MPS_TO_MPH
+				# print "Lat:" , report.lat, " Lon:", report.lon, " Speed:", report.speed, " Speed KPH:", report.speed * gps.MPS_TO_KPH, " Speed MPH:", report.speed * gps.MPS_TO_MPH
 				haveWeCrossedFinish(report.lat, report.lon)
 	except KeyError:
 		pass
@@ -116,4 +128,4 @@ while True:
 #point_y = -105.026383
 
 ## Call the function with the points and the polygon
-# print(point_in_poly(point_x,point_y,polygon))
+# # print(point_in_poly(point_x,point_y,polygon))

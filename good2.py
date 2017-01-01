@@ -24,6 +24,7 @@ session.stream(gps.WATCH_ENABLE | gps.WATCH_NEWSTYLE)
 #       crossing. We do this by setting numberOfFixesInFinishZoneOnThisLap = 0
 def haveWeCrossedFinish(lat, lon):
 	global numberOfFixesInFinishZoneOnThisLap
+	global time0
 	print("haveWeCrossedFinish??")
 
 	global numberOfFixes
@@ -31,7 +32,7 @@ def haveWeCrossedFinish(lat, lon):
 	print("fix")
 
 	hasCrossedFinishLine = point_in_poly(lat, lon, polygon)
-	if hasCrossedFinishLine:
+	if hasCrossedFinishLine == True:
 		numberOfFixesInFinishZoneOnThisLap += 1
 		print(numberOfFixes, "lat", str(lat), "lon", str(lon), "hasCrossed", hasCrossedFinishLine)
 		if numberOfFixesInFinishZoneOnThisLap == 1:

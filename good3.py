@@ -24,14 +24,15 @@ session.stream(gps.WATCH_ENABLE | gps.WATCH_NEWSTYLE)
 #       crossing. We do this by setting numberOfFixesInFinishZoneOnThisLap = 0
 def haveWeCrossedFinish(lat, lon):
 	global numberOfFixesInFinishZoneOnThisLap
+	global time0
 	print("haveWeCrossedFinish??")
 
 	global numberOfFixes
 	numberOfFixes += 1
-	print("fix")
+	#print("fix")
 
 	hasCrossedFinishLine = point_in_poly(lat, lon, polygon)
-	if hasCrossedFinishLine:
+	if hasCrossedFinishLine == True:
 		numberOfFixesInFinishZoneOnThisLap += 1
 		print(numberOfFixes, "lat", str(lat), "lon", str(lon), "hasCrossed", hasCrossedFinishLine)
 		if numberOfFixesInFinishZoneOnThisLap == 1:
@@ -40,8 +41,13 @@ def haveWeCrossedFinish(lat, lon):
 				elapsedTime = time.time() - time0, " Time seconds wall time "
 			# store wall time at lap beginning so we can use it to calculate elapsedTime for the next lap:
 			time0 = time.time()
-
-			print("FINISH!!!! ", numberOfFixes, "lat", str(lat), "lon", str(lon), "elapsed:", elapsedTime)
+			print(" ")
+			print(elapsedTime, " ################################################################")
+			print(elapsedTime, " ################################################################")
+			print(elapsedTime, " ########## FINISH!!!! ", numberOfFixes, "lat", str(lat), "lon", str(lon), "elapsed:", elapsedTime)
+			print(elapsedTime, " ################################################################")
+			print(elapsedTime, " ################################################################")
+			print(" ")
 	else:
 		if numberOfFixesInFinishZoneOnThisLap > 1:
 			# have we left the finish zone?
