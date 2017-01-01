@@ -8,6 +8,6 @@ call(["sudo", "gpsd", "/dev/ttyUSB0", "-F", "/var/run/gpsd.sock"])
 # sudo gpsd /dev/ttyUSB0 -F /var/run/gpsd.sock
 
 time.sleep(3)
-print("finished!")
+print("finished!!")
 
-call(["cgps", "-s"])
+# call(["cgps", "-s"])
