@@ -60,9 +60,8 @@ def haveWeCrossedFinish(lat, lon):
 			# print(elapsedTime, " ################################################################")
 			# print(elapsedTime, " ########## FINISH!!!! ", numberOfFixes, "lat", str(lat), "lon", str(lon), "elapsed:", elapsedTime)
 			# print(elapsedTime, " ################################################################")
-            if lapNum > 0:
-                print("Lap", lapNum, elapsedTime )
-                
+			if lapNum > 0:
+				print("Lap", lapNum, elapsedTime)
 			# print(" ")
 			lapNum += 1
 	else:
